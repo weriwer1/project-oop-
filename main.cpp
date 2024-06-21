@@ -6,6 +6,7 @@
 
 using namespace std;
 
+
 class Religion {
 protected:
     string name;
@@ -29,6 +30,7 @@ public:
 
     virtual void displayInfo() const = 0;
     virtual void performRitual() const = 0; 
+    virtual void celebrateHoliday() const = 0; 
 };
 
 class Hinduism : public Religion {
@@ -44,6 +46,10 @@ public:
 
     void performRitual() const override {
         cout << "Hinduism Ritual: Performing a Puja ceremony." << endl;
+    }
+
+    void celebrateHoliday() const override {
+        cout << "Hinduism Holiday: Celebrating Diwali, the festival of lights." << endl;
     }
 };
 
@@ -61,6 +67,10 @@ public:
     void performRitual() const override {
         cout << "Buddhism Ritual: Practicing meditation and chanting." << endl;
     }
+
+    void celebrateHoliday() const override {
+        cout << "Buddhism Holiday: Celebrating Vesak, Buddha's birthday." << endl;
+    }
 };
 
 class Confucianism : public Religion {
@@ -76,6 +86,10 @@ public:
 
     void performRitual() const override {
         cout << "Confucianism Ritual: Performing ancestral worship." << endl;
+    }
+
+    void celebrateHoliday() const override {
+        cout << "Confucianism Holiday: Celebrating Confucius' Birthday." << endl;
     }
 };
 
@@ -93,6 +107,10 @@ public:
     void performRitual() const override {
         cout << "Taoism Ritual: Practicing Tai Chi and Qigong." << endl;
     }
+
+    void celebrateHoliday() const override {
+        cout << "Taoism Holiday: Celebrating Chinese New Year." << endl;
+    }
 };
 
 class Judaism : public Religion {
@@ -108,6 +126,10 @@ public:
 
     void performRitual() const override {
         cout << "Judaism Ritual: Observing Shabbat and holidays." << endl;
+    }
+
+    void celebrateHoliday() const override {
+        cout << "Judaism Holiday: Celebrating Hanukkah, the festival of lights." << endl;
     }
 };
 
@@ -125,6 +147,10 @@ public:
     void performRitual() const override {
         cout << "Islam Ritual: Performing the five daily prayers (Salah)." << endl;
     }
+
+    void celebrateHoliday() const override {
+        cout << "Islam Holiday: Celebrating Eid al-Fitr, the end of Ramadan." << endl;
+    }
 };
 
 class Christianity : public Religion {
@@ -141,13 +167,16 @@ public:
     void performRitual() const override {
         cout << "Christianity Ritual: Attending church services and taking Communion." << endl;
     }
-};
 
+    void celebrateHoliday() const override {
+        cout << "Christianity Holiday: Celebrating Christmas, the birth of Jesus Christ." << endl;
+    }
+};
 
 class ReligionManager {
 private:
     vector<shared_ptr<Religion>> religions;
-    vector<string> askedReligions; 
+    vector<string> askedReligions;
 
 public:
     void addReligion(shared_ptr<Religion> religion) {
@@ -171,7 +200,7 @@ public:
                 if (religion->getSacredBook() == guess) {
                     cout << "Correct! Access granted to detailed information about the book." << endl;
                     religion->displayInfo();
-                    askedReligions.push_back(name); 
+                    askedReligions.push_back(name);
                 } else {
                     cout << "Incorrect. Access denied to detailed information about the book." << endl;
                 }
@@ -185,6 +214,16 @@ public:
         for (const auto& religion : religions) {
             if (religion->getName() == name) {
                 religion->performRitual();
+                return;
+            }
+        }
+        cout << "Religion not found." << endl;
+    }
+
+    void celebrateHoliday(const string& name) {
+        for (const auto& religion : religions) {
+            if (religion->getName() == name) {
+                religion->celebrateHoliday();
                 return;
             }
         }
@@ -204,7 +243,7 @@ int main() {
 
     string choice;
     while (true) {
-        cout << "1. Display Asked Religions\n2. Guess Sacred Book\n3. Perform Ritual\n4. Exit\n";
+        cout << "1. Display Asked Religions\n2. Guess Sacred Book\n3. Perform Ritual\n4. Celebrate Holiday\n5. Exit\n";
         cout << "Enter your choice: ";
         int option;
         cin >> option;
@@ -223,6 +262,10 @@ int main() {
             cin >> choice;
             manager.performRitual(choice);
         } else if (option == 4) {
+            cout << "Enter the name of the religion: ";
+            cin >> choice;
+            manager.celebrateHoliday(choice);
+        } else if (option == 5) {
             break;
         } else {
             cout << "Invalid option. Please try again." << endl;
