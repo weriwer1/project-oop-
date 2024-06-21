@@ -28,6 +28,7 @@ public:
     }
 
     virtual void displayInfo() const = 0;
+    virtual void performRitual() const = 0; 
 };
 
 class Hinduism : public Religion {
@@ -39,6 +40,10 @@ public:
         cout << "Sacred Book: " << sacredBook << endl;
         cout << "Description: " << bookDescription << endl;
         cout << "Creation Year: " << bookCreationYear << " BCE" << endl;
+    }
+
+    void performRitual() const override {
+        cout << "Hinduism Ritual: Performing a Puja ceremony." << endl;
     }
 };
 
@@ -52,6 +57,10 @@ public:
         cout << "Description: " << bookDescription << endl;
         cout << "Creation Year: " << bookCreationYear << " BCE" << endl;
     }
+
+    void performRitual() const override {
+        cout << "Buddhism Ritual: Practicing meditation and chanting." << endl;
+    }
 };
 
 class Confucianism : public Religion {
@@ -63,6 +72,10 @@ public:
         cout << "Sacred Book: " << sacredBook << endl;
         cout << "Description: " << bookDescription << endl;
         cout << "Creation Year: " << bookCreationYear << " BCE" << endl;
+    }
+
+    void performRitual() const override {
+        cout << "Confucianism Ritual: Performing ancestral worship." << endl;
     }
 };
 
@@ -76,6 +89,10 @@ public:
         cout << "Description: " << bookDescription << endl;
         cout << "Creation Year: " << bookCreationYear << " BCE" << endl;
     }
+
+    void performRitual() const override {
+        cout << "Taoism Ritual: Practicing Tai Chi and Qigong." << endl;
+    }
 };
 
 class Judaism : public Religion {
@@ -87,6 +104,10 @@ public:
         cout << "Sacred Book: " << sacredBook << endl;
         cout << "Description: " << bookDescription << endl;
         cout << "Creation Year: " << bookCreationYear << " BCE" << endl;
+    }
+
+    void performRitual() const override {
+        cout << "Judaism Ritual: Observing Shabbat and holidays." << endl;
     }
 };
 
@@ -100,6 +121,10 @@ public:
         cout << "Description: " << bookDescription << endl;
         cout << "Creation Year: " << bookCreationYear << " CE" << endl;
     }
+
+    void performRitual() const override {
+        cout << "Islam Ritual: Performing the five daily prayers (Salah)." << endl;
+    }
 };
 
 class Christianity : public Religion {
@@ -112,12 +137,17 @@ public:
         cout << "Description: " << bookDescription << endl;
         cout << "Creation Year: " << bookCreationYear << " CE" << endl;
     }
+
+    void performRitual() const override {
+        cout << "Christianity Ritual: Attending church services and taking Communion." << endl;
+    }
 };
+
 
 class ReligionManager {
 private:
     vector<shared_ptr<Religion>> religions;
-    vector<string> askedReligions;
+    vector<string> askedReligions; 
 
 public:
     void addReligion(shared_ptr<Religion> religion) {
@@ -141,10 +171,20 @@ public:
                 if (religion->getSacredBook() == guess) {
                     cout << "Correct! Access granted to detailed information about the book." << endl;
                     religion->displayInfo();
-                    askedReligions.push_back(name);
+                    askedReligions.push_back(name); 
                 } else {
                     cout << "Incorrect. Access denied to detailed information about the book." << endl;
                 }
+                return;
+            }
+        }
+        cout << "Religion not found." << endl;
+    }
+
+    void performRitual(const string& name) {
+        for (const auto& religion : religions) {
+            if (religion->getName() == name) {
+                religion->performRitual();
                 return;
             }
         }
@@ -164,7 +204,7 @@ int main() {
 
     string choice;
     while (true) {
-        cout << "1. Display Asked Religions\n2. Guess Sacred Book\n3. Exit\n";
+        cout << "1. Display Asked Religions\n2. Guess Sacred Book\n3. Perform Ritual\n4. Exit\n";
         cout << "Enter your choice: ";
         int option;
         cin >> option;
@@ -179,6 +219,10 @@ int main() {
             cin >> guess;
             manager.guessSacredBook(choice, guess);
         } else if (option == 3) {
+            cout << "Enter the name of the religion: ";
+            cin >> choice;
+            manager.performRitual(choice);
+        } else if (option == 4) {
             break;
         } else {
             cout << "Invalid option. Please try again." << endl;
@@ -187,3 +231,4 @@ int main() {
 
     return 0;
 }
+
